@@ -1,4 +1,7 @@
 // kafka/consumer.ts
+import { EmailMessageModel } from "../model/email.model";
+import { SmsMessageModel } from "../model/sms.model";
+import { WhatsAppMessageModel } from "../model/whatsapp.model";
 import { MessagePayload } from "../types/message";
 import { kafka } from "./client";
 
@@ -23,17 +26,20 @@ export const startConsumer = async () => {
         switch (topic) {
           case "message.email":
             // handleEmail(payload);
+            await EmailMessageModel.create(payload);
             console.log("email")
             break;
 
           case "message.sms":
             // handleSMS(payload);
+            await SmsMessageModel.create(payload);
             console.log("sms")
 
             break;
 
           case "message.whatsapp":
             // handleWhatsApp(payload);
+            await WhatsAppMessageModel.create(payload);
             console.log("whatApps")
 
             break;

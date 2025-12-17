@@ -2,11 +2,12 @@ import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { MessagePayload } from '../types/message';
 import { produceMessage } from '../kafka/producer';
+import { MessagePayloadSchema } from '../types/vaidation';
 
 class MessageController {
 async sendMessage(req : Request, res : Response){
     try {
-        const payload = req.body as MessagePayload
+        const payload =MessagePayloadSchema.parse(req.body ) 
         await produceMessage(payload)
         res.status(200).json({
             payload
