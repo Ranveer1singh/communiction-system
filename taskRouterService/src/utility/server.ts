@@ -13,6 +13,7 @@ class Server {
     public async start() {
         this.setupMiddleware()
         this.listenServer()
+        this.routeSetup()
         await createProducer();
 
     }
