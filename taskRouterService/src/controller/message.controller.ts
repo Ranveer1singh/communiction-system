@@ -8,6 +8,9 @@ async sendMessage(req : Request, res : Response){
     try {
         const payload = req.body as MessagePayload
         await produceMessage(payload)
+        res.status(200).json({
+            payload
+        })
     } catch (error) {
         throw new Error((error as any))
     }
