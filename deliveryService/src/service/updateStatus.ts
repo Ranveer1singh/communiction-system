@@ -11,6 +11,6 @@ export const updateMessageStatus = async (
     {
       status,
     },
-    { new: true }
+    { new: true ,sort: { createdAt: -1 }},
   );
 };

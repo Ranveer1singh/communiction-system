@@ -2,6 +2,7 @@ import express, { Application, Request, Response, Router } from "express";
 import apiRoutes from "../routes"
 import "dotenv/config"
 import { createProducer } from "../kafka/producer"
+import { startConsumer } from "../kafka/consumer";
 class Server {
 
     private app: Application;
@@ -15,6 +16,7 @@ class Server {
         this.listenServer()
         this.routeSetup()
         await createProducer();
+        await startConsumer();
 
     }
 private setupMiddleware():void{

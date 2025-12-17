@@ -3,6 +3,7 @@ import express, { Application, Request, Response, Router } from "express";
 import dbConnnection from "./db"
 import "dotenv/config"
 import { startConsumer } from "../kafka/consumer";
+import { createProducer } from "../kafka/producer";
 dbConnnection();
 
 class Server {
@@ -17,6 +18,7 @@ class Server {
         this.setupMiddleware()
         this.listenServer()
         await startConsumer();
+        await createProducer()
 
     }
 

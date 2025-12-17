@@ -2,16 +2,15 @@
 import { Producer } from "kafkajs";
 import { kafka } from "./client";
 import { MessagePayload } from "../types/message";
-import { TOPICS } from "../constant/topic";
-import { retry } from "../utility/retry";
-import { isDuplicate, markProcessed } from "../utility/duplicate";
+import { TOPICS } from "../constants";
+
 
 let producer: Producer;
 
 export const createProducer = async () => {
   producer = kafka.producer();
   await producer.connect();
-  console.log("✅ Kafka Producer connected");
+  console.log("✅ Kafka Producer for failed message connected");
   return producer;
 };
 
@@ -20,13 +19,10 @@ export const getProducer = () => {
   return producer;
 };
 
-export const produceMessage = async (payload: MessagePayload) => {
+export const produceFailedMessage = async (payload: MessagePayload) => {
   console.log("message", payload);
-  // 🔁 Duplicate check
-  // if (isDuplicate(payload.messageId)) {
-  //   console.log(`⚠️ Duplicate message ignored: ${payload.messageId}`);
-  //   return;
-  // }
+
+ 
   const prod = getProducer();
   const topic = TOPICS[payload.channel];
   await prod.send({
@@ -38,7 +34,7 @@ export const produceMessage = async (payload: MessagePayload) => {
           },
         ],
       });
-      markProcessed(payload.messageId);
+      
       
   console.log(`📤 Message ${payload.messageId} sent to Kafka`);
 };
