@@ -3,7 +3,8 @@ import { Schema, model } from "mongoose";
 export enum StatusEnum {
   PENDING = "pending",
   DELIVERED = "delivered",
-  FAILED = "failed"
+  FAILED = "failed",
+  DUPLICATE= "duplicate"
 }
 export const baseOptions = {
   discriminatorKey: "channel",

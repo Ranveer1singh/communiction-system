@@ -4,6 +4,7 @@ import { StatusEnum } from "../model/message.model";
 import { SmsMessageModel } from "../model/sms.model";
 import { WhatsAppMessageModel } from "../model/whatsapp.model";
 import { checkCount } from "../utility/duplication";
+import { checkDuplicacy } from "./duplicacyHandler";
 import { updateMessageStatus } from "./updateStatus";
 
 export const handleMessageByTopic = async (
@@ -28,6 +29,12 @@ export const handleMessageByTopic = async (
       default:
         throw new Error(`Unknown topic: ${topic}`);
     }
+    const duplicate = await checkDuplicacy(payload)
+
+    if (duplicate) {
+      await updateMessageStatus(payload.messageId, StatusEnum.DUPLICATE)
+      return;
+    };
     if (payload.channel == "sms" && payload.to === "1234567890") throw new Error("test case")
 
     // ✅ SUCCESS → DELIVERED
