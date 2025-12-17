@@ -3,10 +3,17 @@ import { z } from "zod";
 /**
  * Base schema
  */
+export enum statusEnum{
+  PENDING = "pending",
+  DELIVERED = "delivered",
+  FAILED = "failed"
+}
+export const StatusSchema = z.nativeEnum(statusEnum);
 const baseSchema = {
-  messageId: z.string().min(1),
+  // messageId: z.string().min(1),
   to: z.string().min(1),
   body: z.string().min(1),
+  status : z.string().default(statusEnum.PENDING)
 };
 
 /**

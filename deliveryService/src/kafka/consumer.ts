@@ -1,9 +1,6 @@
-// kafka/consumer.ts
-import { EmailMessageModel } from "../model/email.model";
-import { SmsMessageModel } from "../model/sms.model";
-import { WhatsAppMessageModel } from "../model/whatsapp.model";
-import { MessagePayload } from "../types/message";
 import { kafka } from "./client";
+import { handleMessageByTopic } from "../service/messageHandler";
+import { MessagePayload } from "../types/message";
 
 const consumer = kafka.consumer({ groupId: "delivery-service-group" });
 
@@ -16,39 +13,18 @@ export const startConsumer = async () => {
     await consumer.subscribe({ topic: "message.sms", fromBeginning: true });
     await consumer.subscribe({ topic: "message.whatsapp", fromBeginning: true });
 
-
     await consumer.run({
       eachMessage: async ({ topic, message }) => {
         if (!message.value) return;
+
         const payload: MessagePayload = JSON.parse(
           message.value.toString()
         );
-        switch (topic) {
-          case "message.email":
-            // handleEmail(payload);
-            await EmailMessageModel.create(payload);
-            console.log("email")
-            break;
 
-          case "message.sms":
-            // handleSMS(payload);
-            await SmsMessageModel.create(payload);
-            console.log("sms")
-
-            break;
-
-          case "message.whatsapp":
-            // handleWhatsApp(payload);
-            await WhatsAppMessageModel.create(payload);
-            console.log("whatApps")
-
-            break;
-
-          default:
-            console.log("Unknown topic", topic);
-        }
-      }
+        await handleMessageByTopic(topic, payload);
+      },
     });
+
   } catch (err) {
     console.error("❌ Kafka Consumer error:", err);
   }

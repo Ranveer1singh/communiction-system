@@ -29,9 +29,7 @@ export const produceMessage = async (payload: MessagePayload) => {
   }
   const prod = getProducer();
   const topic = TOPICS[payload.channel];
- await retry(
-    async () => {
-      await prod.send({
+  await prod.send({
         topic,
         messages: [
           {
@@ -41,12 +39,6 @@ export const produceMessage = async (payload: MessagePayload) => {
         ],
       });
       markProcessed(payload.messageId);
-      console.log(
-        `📤 Message ${payload.messageId} sent to Kafka topic ${topic}`
-      );
-    },
-    3,      // retries
-    500     // delay in ms
-  );
+      
   console.log(`📤 Message ${payload.messageId} sent to Kafka`);
 };

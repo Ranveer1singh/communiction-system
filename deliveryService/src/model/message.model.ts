@@ -1,5 +1,10 @@
 import { Schema, model } from "mongoose";
 
+export enum StatusEnum {
+  PENDING = "pending",
+  DELIVERED = "delivered",
+  FAILED = "failed"
+}
 export const baseOptions = {
   discriminatorKey: "channel",
   collection: "messages",
@@ -20,6 +25,11 @@ const BaseMessageSchema = new Schema(
     body: {
       type: String,
       required: true,
+    },
+    status: {
+      type: String,
+      enum: Object.values(StatusEnum),
+      default: StatusEnum.PENDING,
     },
   },
   baseOptions

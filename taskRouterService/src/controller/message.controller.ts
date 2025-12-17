@@ -8,14 +8,11 @@ import { isDuplicate } from '../utility/duplicate';
 class MessageController {
 async sendMessage(req : Request, res : Response){
     try {
+        const traceId = uuidv4()
+        console.log(traceId)
         const payload =MessagePayloadSchema.parse(req.body ) 
-         if (isDuplicate(payload.messageId)) {
-            console.log(`⚠️ Duplicate message ignored: ${payload.messageId}`);
-             res.status(403).json({
-                message : `⚠️ Duplicate message ignored: ${payload.messageId}`
-             })
-          }
-        await produceMessage(payload)
+       
+        await produceMessage({...payload, messageId: traceId})
         res.status(200).json({
             payload
         })
