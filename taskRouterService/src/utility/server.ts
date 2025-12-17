@@ -11,11 +11,16 @@ class Server {
     }
 
     public async start() {
+        this.setupMiddleware()
         this.listenServer()
         await createProducer();
 
     }
-
+private setupMiddleware():void{
+        this.app.use(express.json())
+        this.app.use(express.urlencoded({ extended: true }));
+        // this.app.use(cookieParser())
+    }
     private listenServer() {
         const port = process.env.PORT || 5000;
         this.app.listen(port, () => {
