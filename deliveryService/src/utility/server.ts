@@ -1,7 +1,9 @@
 import express, { Application, Request, Response, Router } from "express";
 // import apiRoutes from "../routes"
+import dbConnnection from "./db"
 import "dotenv/config"
 import { startConsumer } from "../kafka/consumer";
+dbConnnection();
 
 class Server {
 
