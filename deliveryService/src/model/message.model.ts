@@ -16,7 +16,6 @@ const BaseMessageSchema = new Schema(
     messageId: {
       type: String,
       required: true,
-      unique: true,
     },
     to: {
       type: String,
