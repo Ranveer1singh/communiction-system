@@ -87,3 +87,13 @@ WhatsApp Payload
   "body": "Invoice attached",
   "mediaUrl": "https://example.com/invoice.pdf"
 }
+
+
+Retry Case :-
+{
+  
+  "channel": "sms",
+  "to": "1234567890",
+  "body": "OTP 1234",
+  "senderId": "MYAPP"
+}
